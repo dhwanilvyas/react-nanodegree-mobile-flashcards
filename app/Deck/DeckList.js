@@ -1,26 +1,27 @@
 import React, { Component } from 'react';
-import { Container, Text, Spinner, Button } from 'native-base';
+import { Container, Content, Text, Spinner, Button, Card, CardItem, Body, H3 } from 'native-base';
 import Expo from 'expo';
+import Deck from '../utils/Deck';
 
 class DeckList extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      cards: null,
+      decks: null,
       loading: true
     };
   }
 
   static navigationOptions = {
-    title: 'Deck'
+    title: 'Decks'
   };
 
   componentDidMount() {
-    Expo.SecureStore.getItemAsync('udacicards')
+    Deck.getDecks()
       .then(response => {
         this.setState({
-          cards: response,
+          decks: Object.keys(response).map(key => response[key]),
           loading: false
         });
       })
@@ -36,7 +37,7 @@ class DeckList extends Component {
       );
     }
 
-    if (!this.state.cards && !this.state.loading) {
+    if (!this.state.decks && !this.state.loading) {
       return (
         <Container>
           <Text>Seems like you have not added any decks yet.</Text>
@@ -48,8 +49,33 @@ class DeckList extends Component {
     }
 
     return (
-      <Text>Homed!</Text>
+      <Content contentContainerStyle={styles.content}>
+        {this.state.decks.map(deck => {
+          return (
+            <Card key={deck.title}>
+              <CardItem>
+                <Body style={styles.card}>
+                  <H3>{deck.title}</H3>
+                  <Text>{deck.questions ? deck.questions.length : 0} cards</Text>
+                </Body>
+              </CardItem>
+            </Card>
+          );
+        })}
+      </Content>
     );
+  }
+}
+
+const styles = {
+  content: {
+    flex: 1,
+    backgroundColor: '#e8e8e8',
+  },
+  card: {
+    height: 100,
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 }
 

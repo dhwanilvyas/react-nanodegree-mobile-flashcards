@@ -30,5 +30,4 @@ class App extends Component {
     return <AppNavigation />
   }
 }
-
 export default App;
