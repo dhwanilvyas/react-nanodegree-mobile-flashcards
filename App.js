@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { Container } from 'native-base';
+import { Provider } from 'react-redux';
 import { AppLoading } from 'expo';
 import AppNavigation from './app/AppNavigation';
+import store from './app/redux/store';
 
 class App extends Component {
   state = {
@@ -28,9 +30,11 @@ class App extends Component {
     }
 
     return (
-      <Container style={{marginTop: 24}}>
-        <AppNavigation />
-      </Container>
+      <Provider store={store}>
+        <Container style={{marginTop: 24}}>
+          <AppNavigation />
+        </Container>
+      </Provider>
     )
   }
 }

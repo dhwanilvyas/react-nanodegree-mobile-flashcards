@@ -13,7 +13,7 @@ export default {
 
     await Expo.SecureStore.setItemAsync('udacicards', JSON.stringify(store));
 
-    return;
+    return store[title];
   },
 
   async getDecks () {

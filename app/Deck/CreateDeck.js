@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Container, Content, Center, Form, Item, Label, Input, H3, Button, Text, Footer } from 'native-base';
 import Deck from '../utils/Deck';
+import { addDeck } from '../redux/actions/deck';
 
 class CreateDeck extends Component {
   constructor(props) {
@@ -9,15 +11,14 @@ class CreateDeck extends Component {
     this.state = {
       deckTitle: null
     };
-
-    this.createDeck = this.createDeck.bind(this);
   }
 
-  createDeck() {
+  createDeck = () => {
     Deck.saveDeckTitle(this.state.deckTitle)
-      .then(() => {
-        this.props.navigation.navigate('Home');
-      })
+      .then((deck) => {
+        this.props.dispatch(addDeck(deck));
+        this.props.navigation.navigate('DeckView', {deck});
+      });
   }
 
   render() {
@@ -65,4 +66,4 @@ const styles = {
   },
 }
 
-export default CreateDeck;
+export default connect(null, null)(CreateDeck);

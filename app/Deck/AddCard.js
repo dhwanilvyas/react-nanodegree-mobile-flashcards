@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Container, Content, Form, Item, Input, Button, Text } from 'native-base';
 import Deck from '../utils/Deck';
+import { addCardToDeck } from '../redux/actions/deck';
 
 class AddCard extends Component {
   state = {
@@ -14,8 +16,10 @@ class AddCard extends Component {
 
   addCardToDeck() {
     const { params } = this.props.navigation.state;
+
     Deck.addCardToDeck(params.deck.title, this.state)
       .then(() => {
+        this.props.dispatch(addCardToDeck(params.deck.title, this.state));
         this.props.navigation.navigate('DeckView', {deck: params.deck});
       });
   }
@@ -47,4 +51,4 @@ class AddCard extends Component {
   }
 }
 
-export default AddCard;
+export default connect(null, null)(AddCard);

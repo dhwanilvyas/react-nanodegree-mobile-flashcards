@@ -1,45 +1,26 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { ScrollView } from 'react-native';
 import { Container, Content, Text, Spinner, Button, Card, CardItem, Body, H3 } from 'native-base';
 import Expo from 'expo';
-import Deck from '../utils/Deck';
 import commonStyles from '../utils/commonStyles';
+import { getDecks } from '../redux/actions/deck';
 
 class DeckList extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      decks: null,
-      loading: true
-    };
-  }
-
   static navigationOptions = {
     title: 'Decks'
   };
 
   componentDidMount() {
-    Deck.getDecks()
-      .then(response => {
-        this.setState({
-          decks: response ? Object.keys(response).map(key => response[key]) : null,
-          loading: false
-        });
-      })
-      .catch(err => {
-        console.log(err);
-      })
+    this.props.dispatch(getDecks());
   }
 
   render() {
-    if (this.state.loading) {
-      return (
-        <Spinner />
-      );
+    if (this.props.loading) {
+      return <Spinner />
     }
 
-    if (!this.state.decks && !this.state.loading) {
+    if (this.props.decks.length === 0) {
       return (
         <Container style={styles.noContent}>
           <Text style={styles.noContentText}>No decks found.</Text>
@@ -53,7 +34,7 @@ class DeckList extends Component {
     return (
       <Content contentContainerStyle={styles.content} scrollEnabled={false}>
         <ScrollView>
-          {this.state.decks.map(deck => {
+          {this.props.decks.map(deck => {
           return (
             <Card key={deck.title}>
               <CardItem button onPress={() => this.props.navigation.navigate('DeckView', {deck})}>
@@ -96,4 +77,12 @@ const styles = {
   }
 }
 
-export default DeckList;
+function mapStateToProps(state) {
+  console.log(state.decks.decks);
+  return {
+    decks: state.decks.decks,
+    loading: state.decks.loading
+  };
+}
+
+export default connect(mapStateToProps, null)(DeckList);
