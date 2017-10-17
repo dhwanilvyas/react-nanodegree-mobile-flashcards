@@ -16,7 +16,7 @@ class CreateDeck extends Component {
   createDeck() {
     Deck.saveDeckTitle(this.state.deckTitle)
       .then(() => {
-        this.props.navigation.navigate('DeckList');
+        this.props.navigation.navigate('Home');
       })
   }
 
@@ -36,8 +36,8 @@ class CreateDeck extends Component {
             </Item>
           </Form>
         </Content>
-        <Button full bordered medium transparent onPress={this.createDeck}>
-          <Text style={styles.footerText}>Create deck</Text>
+        <Button full bordered medium transparent onPress={this.createDeck} style={styles.button}>
+          <Text>Create deck</Text>
         </Button>
       </Container>
     );
@@ -57,9 +57,12 @@ const styles = {
     fontSize: 40,
     color: '#f5f5f5'
   },
-  footerText: {
-    color: '#ffffff'
-  }
+  button: {
+    backgroundColor: '#ffffff',
+    marginBottom: 25,
+    marginLeft: 10,
+    marginRight: 10,
+  },
 }
 
 export default CreateDeck;

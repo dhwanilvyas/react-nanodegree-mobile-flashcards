@@ -1,33 +1,37 @@
 import React, { Component } from 'react';
-import { Text } from 'native-base';
+import { Container } from 'native-base';
+import { AppLoading } from 'expo';
 import AppNavigation from './app/AppNavigation';
 
 class App extends Component {
-  constructor(props) {
-    super(props);
+  state = {
+    loading: true
+  };
 
-    this.state = {
-      loading: true
-    };
-  }
-
-  async componentWillMount() {
+  async loadFonts() {
+    // Expo.SecureStore.deleteItemAsync('udacicards');
     await Expo.Font.loadAsync({
       'Roboto': require('native-base/Fonts/Roboto.ttf'),
       'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
     });
-
-    this.setState({
-      loading: false
-    })
   }
 
   render() {
     if (this.state.loading) {
-      return <Text>App loading.</Text>
+      return (
+        <AppLoading
+          startAsync={this.loadFonts}
+          onFinish={() => this.setState({ loading: false })}
+          onError={console.warn}
+        />
+      );
     }
 
-    return <AppNavigation />
+    return (
+      <Container style={{marginTop: 24}}>
+        <AppNavigation />
+      </Container>
+    )
   }
 }
 export default App;

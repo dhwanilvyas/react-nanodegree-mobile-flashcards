@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import { ScrollView } from 'react-native';
 import { Container, Content, Text, Spinner, Button, Card, CardItem, Body, H3 } from 'native-base';
 import Expo from 'expo';
 import Deck from '../utils/Deck';
+import commonStyles from '../utils/commonStyles';
 
 class DeckList extends Component {
   constructor(props) {
@@ -21,7 +23,7 @@ class DeckList extends Component {
     Deck.getDecks()
       .then(response => {
         this.setState({
-          decks: Object.keys(response).map(key => response[key]),
+          decks: response ? Object.keys(response).map(key => response[key]) : null,
           loading: false
         });
       })
@@ -39,9 +41,9 @@ class DeckList extends Component {
 
     if (!this.state.decks && !this.state.loading) {
       return (
-        <Container>
-          <Text>Seems like you have not added any decks yet.</Text>
-          <Button onPress={() => this.props.navigation.navigate('CreateDeck')}>
+        <Container style={styles.noContent}>
+          <Text style={styles.noContentText}>No decks found.</Text>
+          <Button block style={styles.noContentButton} onPress={() => this.props.navigation.navigate('CreateDeck')}>
             <Text>Add one right now!</Text>
           </Button>
         </Container>
@@ -49,19 +51,21 @@ class DeckList extends Component {
     }
 
     return (
-      <Content contentContainerStyle={styles.content}>
-        {this.state.decks.map(deck => {
+      <Content contentContainerStyle={styles.content} scrollEnabled={false}>
+        <ScrollView>
+          {this.state.decks.map(deck => {
           return (
             <Card key={deck.title}>
-              <CardItem>
+              <CardItem button onPress={() => this.props.navigation.navigate('DeckView', {deck})}>
                 <Body style={styles.card}>
                   <H3>{deck.title}</H3>
-                  <Text>{deck.questions ? deck.questions.length : 0} cards</Text>
+                  <Text>{deck.questions.length} cards</Text>
                 </Body>
               </CardItem>
             </Card>
           );
         })}
+        </ScrollView>
       </Content>
     );
   }
@@ -71,6 +75,19 @@ const styles = {
   content: {
     flex: 1,
     backgroundColor: '#e8e8e8',
+    margin: 5
+  },
+  noContent: {
+    ...commonStyles.centerContent,
+    backgroundColor: '#9CCC65',
+  },
+  noContentText: {
+    color: '#ffffff',
+    fontSize: 30,
+    fontWeight: 'bold'
+  },
+  noContentButton: {
+    margin: 15
   },
   card: {
     height: 100,

@@ -7,7 +7,8 @@ export default {
     if (!store) store = {};
 
     store[title] = {
-      title
+      title,
+      questions: []
     };
 
     await Expo.SecureStore.setItemAsync('udacicards', JSON.stringify(store));
@@ -22,6 +23,13 @@ export default {
 
   async removeDecks() {
     await Expo.SecureStore.deleteItemAsync('udacicards');
+    return true;
+  },
+
+  async addCardToDeck(deckTitle, card) {
+    let store = await this.getDecks();
+    store[deckTitle].questions.push(card);
+    await Expo.SecureStore.setItemAsync('udacicards', JSON.stringify(store));
     return true;
   }
 };
