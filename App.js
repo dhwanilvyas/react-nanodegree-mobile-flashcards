@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { AppLoading } from 'expo';
 import AppNavigation from './app/AppNavigation';
 import store from './app/redux/store';
+import Notifications from './app/utils/notification';
 
 class App extends Component {
   state = {
@@ -16,6 +17,10 @@ class App extends Component {
       'Roboto': require('native-base/Fonts/Roboto.ttf'),
       'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
     });
+  }
+
+  async omponentDidMount() {
+    await Notifications.setLocalNotification();
   }
 
   render() {

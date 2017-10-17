@@ -78,7 +78,6 @@ const styles = {
 }
 
 function mapStateToProps(state) {
-  console.log(state.decks.decks);
   return {
     decks: state.decks.decks,
     loading: state.decks.loading

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Container, Content, H1, H3, Button, Footer, Text } from 'native-base';
 import commonStyles from '../utils/commonStyles';
+import Notifications from '../utils/notification';
 
 class StartQuiz extends Component {
   static navigationOptions = {
@@ -10,6 +11,7 @@ class StartQuiz extends Component {
   score = 0;
   state = {
     answerViewActive: false,
+    quizComplete: false,
     totalQuestions: 0,
     currentQuestion: 1
   };
@@ -27,9 +29,16 @@ class StartQuiz extends Component {
   }
 
   changeCurrentQuestion = () => {
+    let q = this.state.currentQuestion;
+    q += 1;
+
     this.setState(() => ({
-      currentQuestion: this.state.currentQuestion++
+      currentQuestion: q,
     }));
+
+    if (this.state.currentQuestion == this.props.navigation.state.params.deck.questions.length) {
+      this.completeQuiz();
+    }
   }
 
   correct = () => {
@@ -42,6 +51,15 @@ class StartQuiz extends Component {
     this.changeCurrentQuestion();
   }
 
+  completeQuiz = () => {
+    this.setState({
+      quizComplete: true
+    });
+
+    Notifications.clearLocalNotification()
+      .then(Notifications.setLocalNotification)
+  }
+
   render() {
     const { params } = this.props.navigation.state;
 
@@ -52,6 +70,23 @@ class StartQuiz extends Component {
             <H3>No cards are added to this deck.</H3>
             <Button bordered dark block style={commonStyles.fullButton} onPress={() => this.props.navigation.navigate('AddCard', {deck: params.deck})}>
               <Text>Add now!</Text>
+            </Button>
+          </Content>
+        </Container>
+      )
+    }
+
+    if (this.state.quizComplete) {
+      return (
+        <Container>
+          <Content contentContainerStyle={commonStyles.centerContent}>
+            <H1>Quiz over!</H1>
+            <Text>You scored {this.score}/{params.deck.questions.length}</Text>
+            <Button bordered dark block style={commonStyles.fullButton} onPress={() => this.props.navigation.navigate('StartQuiz', {deck: params.deck})}>
+              <Text>Retake quiz</Text>
+            </Button>
+            <Button bordered dark block style={commonStyles.fullButton} onPress={() => this.props.navigation.navigate('DeckView', {deck: params.deck})}>
+              <Text>Back home</Text>
             </Button>
           </Content>
         </Container>
@@ -75,7 +110,7 @@ class StartQuiz extends Component {
             </Button>
           }
         </Content>
-        <Button success block style={commonStyles.fullButton} onPress={() => this.correct}>
+        <Button success block style={commonStyles.fullButton} onPress={this.correct}>
           <Text>Correct</Text>
         </Button>
         <Button danger block style={commonStyles.fullButton} onPress={this.inCorrect}>

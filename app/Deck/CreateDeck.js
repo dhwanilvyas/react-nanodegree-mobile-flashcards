@@ -17,6 +17,7 @@ class CreateDeck extends Component {
     Deck.saveDeckTitle(this.state.deckTitle)
       .then((deck) => {
         this.props.dispatch(addDeck(deck));
+        this.setState({deckTitle: null});
         this.props.navigation.navigate('DeckView', {deck});
       });
   }
