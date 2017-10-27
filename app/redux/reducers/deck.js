@@ -13,11 +13,8 @@ const decksReducer = (state = initialState, action) => {
         loading: false
       })
     case types.ADD_DECK:
-      let decks = state.decks;
-      decks.push(action.deck);
-
       return Object.assign({}, state, {
-        decks
+        decks: [...state.decks, action.deck]
       });
     case types.ADD_CARD_TO_DECK:
       let stateDecks = state.decks.map(deck => {

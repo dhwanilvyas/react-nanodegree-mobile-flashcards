@@ -5,19 +5,15 @@ import Deck from '../utils/Deck';
 import { addDeck } from '../redux/actions/deck';
 
 class CreateDeck extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      deckTitle: null
-    };
-  }
+  state = {
+    deckTitle: ''
+  };
 
   createDeck = () => {
     Deck.saveDeckTitle(this.state.deckTitle)
       .then((deck) => {
         this.props.dispatch(addDeck(deck));
-        this.setState({deckTitle: null});
+        this.setState({deckTitle: ''});
         this.props.navigation.navigate('DeckView', {deck});
       });
   }
@@ -34,6 +30,7 @@ class CreateDeck extends Component {
                 placeholder="Enter deck title"
                 placeholderTextColor='white'
                 underlineColorAndroid='transparent'
+                value={this.state.deckTitle}
                 style={styles.input} />
             </Item>
           </Form>

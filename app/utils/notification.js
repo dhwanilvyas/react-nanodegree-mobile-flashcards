@@ -25,7 +25,6 @@ export default {
   },
 
   setLocalNotification () {
-    console.log(this);
     Expo.SecureStore.getItemAsync(NOTIFICATION_KEY)
       .then(JSON.parse)
       .then((data) => {

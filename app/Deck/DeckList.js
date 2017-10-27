@@ -60,12 +60,11 @@ const styles = {
   },
   noContent: {
     ...commonStyles.centerContent,
-    backgroundColor: '#9CCC65',
+    backgroundColor: '#ffffff',
   },
   noContentText: {
-    color: '#ffffff',
+    color: '#000000',
     fontSize: 30,
-    fontWeight: 'bold'
   },
   noContentButton: {
     margin: 15
