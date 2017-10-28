@@ -1,7 +1,15 @@
 This project was bootstrapped with [Create React Native App](https://github.com/react-community/create-react-native-app).
 
 ## Installation
+1. Install [expo](https://play.google.com/store/apps/details?id=host.exp.exponent) on your android phone.
 1. Clone the repo `git clone https://github.com/dhwanilvyas/react-nanodegree-mobile-flashcards`
 2. `cd react-nanodegree-mobile-flashcards`
 3. Run `yarn` or `npm install`
-4. Run `yarn start` or `npm start`
+4. Run `yarn start` or `npm start`.
+5. Scan the QR code shown on the terminal in your expo app on your android phone.
+6. If you just want to see the app and not follow any of the above mentioed steps, then just go to [this](https://expo.io/@dhwanilvyas/mobile-flashcards) URL and scan the QR code in your expo app on your android phone.
+
+
+# NOTE
+> This project is **tested only on Android**
+> There might be some issues with **ios**
